@@ -30,64 +30,52 @@ window.addEventListener('load', async () => {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        let curso = document.getElementById('curso').value;
+        let departamento = document.getElementById('departamentos').value;
         let nombres = document.getElementById('nombre').value;
-        let apellidos = document.getElementById('apellido').value;
-        let email = document.getElementById('email').value;
-        let direccion = document.getElementById('direccion').value;
-        let telefono = document.getElementById('telefono').value;
-        let hijos = document.querySelector('input[name="hijos"]:checked').value;
-        let numeroHijos = document.getElementById('numeroHijos').value;
-        let discapacidad = document.querySelector('input[name="discapacidad"]:checked').value;
-        let discapacidadDesc = document.getElementById('discapacidad-desc').value;
+        let puestos = document.getElementById('puesto').value;
+        let numerodealfitions = document.getElementById('numerodealfitrion').value;
+        let newhotel = document.querySelector('input[name="newhotels"]:checked').value;
 
-        generatePDF(curso, nombres, apellidos, email, direccion, telefono, hijos, numeroHijos, discapacidad, discapacidadDesc);
+        generatePDF(departamento,
+            nombres, puestos, numerodealfitions, newhotel);
     })
 
 });
 
-async function generatePDF(curso, nombres, apellidos, email, direccion, telefono, hijos, numeroHijos, discapacidad, discapacidadDesc) {
-    const image = await loadImage("formulario.jpg");
+async function generatePDF(departamento,
+    nombres, puestos, numerodealfitions, newhotel) {
+    
+        const image = await loadImage("formulario.jpg");
     const signatureImage = signaturePad.toDataURL();
 
-    const pdf = new jsPDF('p', 'pt', 'letter');
+    const pdf = new jsPDF('px', 'pt', 'letter');
 
     pdf.addImage(image, 'PNG', 0, 0, 565, 792);
     pdf.addImage(signatureImage, 'PNG', 200, 605, 300, 60);
 
-    pdf.setFontSize(12);
-    pdf.text(curso, 260, 125);
+    pdf.setFontSize(10);
+    pdf.text(departamento, 145, 472);
 
     const date = new Date();
-    pdf.text(date.getUTCDate().toString(), 235, 150);
-    pdf.text((date.getUTCMonth() + 1).toString(), 275, 150);
-    pdf.text(date.getUTCFullYear().toString(), 320, 150);
+    pdf.text(date.getUTCDate().toString(), 145, 517);
+    pdf.text((date.getUTCMonth() + 1).toString(), 170, 517);
+    pdf.text(date.getUTCFullYear().toString(), 190, 517);
 
     pdf.setFontSize(10);
-    pdf.text(nombres, 170, 213);
-    pdf.text(apellidos, 170, 200);
-    pdf.text(direccion, 170, 400);
-    pdf.text(telefono, 170, 456);
-    pdf.text(email, 170, 475);
+    pdf.text(nombres, 145, 456);
+    pdf.text(numerodealfitions, 145, 500);
+    pdf.text(puestos, 145, 486);
 
     pdf.setFillColor(0,0,0);
-
-    if (parseInt(hijos) === 0) {
-        pdf.circle(255, 374, 4, 'FD');
+    
+    if (parseInt(newhotel) === 0) {
+        pdf.circle(0, 0, 0, 'FD');
     } else {
-        pdf.circle(190, 374, 4, 'FD');
-        pdf.text(numeroHijos.toString(), 355, 378);
-    }
-
-    if (parseInt(discapacidad) === 0) {
-        pdf.circle(285, 718, 4, 'FD');
-    } else {
-        pdf.circle(240, 718, 4, 'FD');
-        pdf.text(discapacidadDesc, 350, 720);
+        pdf.circle(204, 309, 4, 'FD');
     }
 
 
 
-    pdf.save("example.pdf");
+    pdf.save("Resguardo de aplicaciones.pdf");
 
 }
